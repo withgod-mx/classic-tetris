@@ -216,28 +216,7 @@ public class Rule {
 
         }
 
-        if (columnPosition < 0) {
-            return desk;
-        }
 
-        //clearPreviousPositionShape(columnPosition - 1, shape);
-
-        for (int i = shape.length - 1; i >= 0; i--) {
-
-            if (columnPosition < 0) {
-                previousRowPosition = rowPosition;
-                previousColumnPosition = columnPosition;
-                return desk;
-            }
-
-            for (int j = 0; j < shape[i].length; j++) {
-                if (desk[columnPosition][rowPosition + j] < 1)
-                    desk[columnPosition][rowPosition + j] = shape[i][j];
-            }
-
-            columnPosition--;
-
-        }
     }
 
     private boolean moveFigureInDesk(int[][] shape, ObjectMove objectMove, GameInfo gameInfo) {
