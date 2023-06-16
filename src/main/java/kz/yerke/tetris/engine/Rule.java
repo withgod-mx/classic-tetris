@@ -197,7 +197,7 @@ public class Rule {
             if (gameInfo.getRowPosition() == 0) {
                 figure.setShape(figureMoveLeftPosition(figure.getShape()));
             } else {
-                boolean moveNextLeft = moveFigureInDesk(figure.getShape(), objectMove);
+                boolean moveNextLeft = moveFigureInDesk(figure.getShape(), objectMove, gameInfo);
                 if (moveNextLeft)
                     gameInfo.setRowPosition(gameInfo.getRowPosition() + 1);
             }
@@ -240,12 +240,13 @@ public class Rule {
         }
     }
 
-    private boolean moveFigureInDesk(int[][] shape, ObjectMove objectMove) {
-        if()
+    private boolean moveFigureInDesk(int[][] shape, ObjectMove objectMove, GameInfo gameInfo) {
+
+        return false;
     }
 
     private boolean checkNextLine(int[][] shape, GameInfo gameInfo) {
-        if (desk)
+
         return false;
     }
 
