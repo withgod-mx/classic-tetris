@@ -122,31 +122,19 @@ public class Engine {
     }
 
     private boolean moveNext(KeyStroke keyStroke, Figures figure) {
-        rule.clearPreviousPositionShape(gameInfo.getColumnPosition() -  1, figure.getShape());
-        if(keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowRight)) {
-
-            rule.moveAndCheckNextFigure(gameInfo, figure, ObjectMove.RIGHT);
-
-            if (gameInfo.getRowPosition() + figure.getShape()[0].length == 10) {
-                figure.setShape(rule.figureMoveRightPosition(figure.getShape()));
-            } else {
-                rowPosition++;
-            }
-        } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowLeft)) {
-            if (gameInfo.getRowPosition() == 0) {
-                figure.setShape(rule.figureMoveLeftPosition(figure.getShape()));
-            } else {
-                rowPosition--;
-            }
+        //rule.clearPreviousPositionShape(gameInfo.getColumnPosition() -  1, figure.getShape());
+        boolean isMove = true;
+        if(keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowLeft)) {
+            isMove = rule.moveAndCheckNextFigure(gameInfo, figure, ObjectMove.LEFT);
+        } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowRight)) {
+            isMove = rule.moveAndCheckNextFigure(gameInfo, figure, ObjectMove.RIGHT);
         } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowUp)) {
             figure.setShape(rule.figureRotate(figure.getShape()));
         } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowDown)) {
 
         }
 
-
-
-        return false;
+        return isMove;
     }
 
     private void drawNextShape(int index) throws IOException {

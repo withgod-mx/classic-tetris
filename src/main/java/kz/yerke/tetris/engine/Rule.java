@@ -199,34 +199,83 @@ public class Rule {
             } else {
                 boolean moveNextLeft = moveFigureInDesk(figure.getShape(), objectMove, gameInfo);
                 if (moveNextLeft)
-                    gameInfo.setRowPosition(gameInfo.getRowPosition() + 1);
+                    gameInfo.setRowPosition(gameInfo.getRowPosition() - 1);
             }
         } else if (objectMove == ObjectMove.RIGHT) {
             if (gameInfo.getRowPosition() + figure.getShape()[0].length == 10) {
                 figure.setShape(figureMoveRightPosition(figure.getShape()));
+            } else {
+                boolean moveNextRight = moveFigureInDesk(figure.getShape(), objectMove, gameInfo);
+                if (moveNextRight) {
+                    gameInfo.setRowPosition(gameInfo.getRowPosition() + 1);
+                }
             }
         }
 
-        if (gameInfo.getColumnPosition() + (figure.getShape().length - 1) >= desk.length - 1) {
+        if (gameInfo.getColumnPosition() == desk.length) {
             figure.setShape(figureMoveDown(figure.getShape()));
-            return checkNextLine(figure.getShape(), gameInfo);
+            return checkFigureDownLine(figure.getShape());
+        } else if (gameInfo.getColumnPosition() > desk.length) {
+            int [] shapeLine = figure.getShape()[figure.getShape().length - 1];
+            for (int i = 0; i < shapeLine.length; i++) {
+                if (desk[gameInfo.getColumnPosition() + 1][gameInfo.getRowPosition() + i] == 1) {
+                    if (shapeLine[i] == 1) {
+                        return false;
+                    }
+                }
+            }
         }
 
-        for (int i = gameInfo.getColumnPosition() + (figure.getShape().length - 1); i <= gameInfo.getColumnPosition(); i--) {
+        return true;
 
+    }
+
+    private boolean checkFigureDownLine(int[][] shape) {
+        for (int i = 0; i < shape[shape.length - 1].length; i++) {
+            if (shape[shape.length - 1][i] == 1) {
+                return false;
+            }
         }
-
-
+        return true;
     }
 
     private boolean moveFigureInDesk(int[][] shape, ObjectMove objectMove, GameInfo gameInfo) {
-
-        return false;
+        boolean move = true;
+        if (objectMove != null && ((objectMove == ObjectMove.LEFT) && (gameInfo.getRowPosition() > 0))) {
+            move = moveAndCheckMoveRightOrLeft(gameInfo, shape, 0);
+        } else if (objectMove != null && ((objectMove == ObjectMove.RIGHT) && (gameInfo.getRowPosition() <= 10))) {
+            move = moveAndCheckMoveRightOrLeft(gameInfo, shape, shape.length);
+        }
+        return move;
     }
 
-    private boolean checkNextLine(int[][] shape, GameInfo gameInfo) {
+    private boolean moveAndCheckMoveRightOrLeft(GameInfo gameInfo, int[][] shape, int lastIndex) {
+        boolean move = true;
+        int col = gameInfo.getColumnPosition();
+        int lastRowIndex = 0;
+        if (lastIndex == 0) {
+            lastRowIndex = gameInfo.getRowPosition() - 1;
+        } else {
+            lastRowIndex = gameInfo.getRowPosition() + shape[0].length + 1;
+        }
 
-        return false;
+        for (int i = shape.length - 1; i >= 0; i--) {
+            if(col < 0) {
+                return move;
+            }
+            for (int j = 0; j < shape[i].length; j++) {
+                desk[col][gameInfo.getRowPosition() + j] = shape[i][j];
+
+                if ((desk[col][lastRowIndex] == 1) && (move)) {
+                    if (shape[i][lastIndex - 1] == 1) {
+                        move = false;
+                    }
+                }
+            }
+
+            col--;
+        }
+        return move;
     }
 
     private int[][] figureMoveDown(int[][] shape) {
