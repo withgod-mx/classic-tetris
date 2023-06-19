@@ -6,6 +6,8 @@ public class GameInfo {
     private int columnPosition;
     private int score;
     private int level;
+    private int previousColumnPosition;
+    public int previousRowPosition;
 
     private int speedTimer;
 
@@ -55,5 +57,21 @@ public class GameInfo {
 
     public void setSpeedTimer(int speedTimer) {
         this.speedTimer = speedTimer;
+    }
+
+    public int getPreviousColumnPosition() {
+        return previousColumnPosition;
+    }
+
+    public void setPreviousColumnPosition(int previousColumnPosition) {
+        this.previousColumnPosition = previousColumnPosition;
+    }
+
+    public int getPreviousRowPosition() {
+        return previousRowPosition;
+    }
+
+    public void setPreviousRowPosition(int previousRowPosition) {
+        this.previousRowPosition = previousRowPosition;
     }
 }

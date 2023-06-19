@@ -42,7 +42,7 @@ public class Rule {
 
     public int[][] move(int[][] shape, int columnPosition, int rowPosition) {
 
-        if(previousRowPosition < 0) {
+        if (previousRowPosition < 0) {
             previousRowPosition = rowPosition;
         }
 
@@ -78,23 +78,23 @@ public class Rule {
         return desk;
     }
 
-    public void clearPreviousPositionShape(int columnPosition, int[][] shape) {
+    public void clearPreviousPositionShape(GameInfo gameInfo, int[][] shape) {
+        int columnPosition = gameInfo.getPreviousColumnPosition();
         if (columnPosition < 0) {
             return;
         }
 
-        System.out.println("columnPosition: " + columnPosition + "; prevCol:" + previousColumnPosition + "; prevRow: " + previousRowPosition);
         for (int i = shape.length - 1; i >= 0; i--) {
 
             if (columnPosition >= 0) {
                 for (int j = 0; j < shape[i].length; j++) {
-                    //System.out.println("columnPosition: " + columnPosition + "; i: " + i);
-                    int pont = desk[columnPosition][previousRowPosition + j];
+                    int pont = desk[columnPosition][gameInfo.getPreviousRowPosition() + j];
                     if ((shape[i][j] == 1) && (pont == 1)) {
-                        desk[columnPosition][previousRowPosition + j] = 0;
+                        desk[columnPosition][gameInfo.getPreviousRowPosition() + j] = 0;
                     }
                 }
             }
+
             columnPosition--;
         }
     }
@@ -180,10 +180,10 @@ public class Rule {
     }
 
     public void crashLineToListAndUpdate(List<Integer> lineCrash) {
-        for (Integer line: lineCrash) {
-            for (int i = line; i > 0; i --) {
+        for (Integer line : lineCrash) {
+            for (int i = line; i > 0; i--) {
                 for (int j = 0; j < desk[i].length; j++) {
-                    if(i - 1 >= 0) {
+                    if (i - 1 >= 0) {
                         desk[i][j] = desk[i - 1][j];
                     }
                 }
@@ -193,13 +193,19 @@ public class Rule {
 
     public boolean moveAndCheckNextFigure(GameInfo gameInfo, Figures figure, ObjectMove objectMove) {
 
+        gameInfo.setPreviousRowPosition(gameInfo.getRowPosition());
+        gameInfo.setPreviousColumnPosition(gameInfo.getColumnPosition());
+
         if (objectMove == ObjectMove.LEFT) {
             if (gameInfo.getRowPosition() == 0) {
                 figure.setShape(figureMoveLeftPosition(figure.getShape()));
             } else {
                 boolean moveNextLeft = moveFigureInDesk(figure.getShape(), objectMove, gameInfo);
-                if (moveNextLeft)
+                if (moveNextLeft) {
+                    //gameInfo.setPreviousRowPosition(gameInfo.getRowPosition());
                     gameInfo.setRowPosition(gameInfo.getRowPosition() - 1);
+
+                }
             }
         } else if (objectMove == ObjectMove.RIGHT) {
             if (gameInfo.getRowPosition() + figure.getShape()[0].length == 10) {
@@ -210,13 +216,20 @@ public class Rule {
                     gameInfo.setRowPosition(gameInfo.getRowPosition() + 1);
                 }
             }
+        } else if (objectMove == ObjectMove.NONE) {
+            boolean moveNextRight = moveFigureInDesk(figure.getShape(), objectMove, gameInfo);
         }
 
         if (gameInfo.getColumnPosition() == desk.length) {
             figure.setShape(figureMoveDown(figure.getShape()));
             return checkFigureDownLine(figure.getShape());
-        } else if (gameInfo.getColumnPosition() > desk.length) {
-            int [] shapeLine = figure.getShape()[figure.getShape().length - 1];
+        } else if (gameInfo.getColumnPosition() < desk.length) {
+            int[] shapeLine = figure.getShape()[figure.getShape().length - 1];
+
+            if (gameInfo.getColumnPosition() == desk.length - 1) {
+                return false;
+            }
+
             for (int i = 0; i < shapeLine.length; i++) {
                 if (desk[gameInfo.getColumnPosition() + 1][gameInfo.getRowPosition() + i] == 1) {
                     if (shapeLine[i] == 1) {
@@ -224,6 +237,7 @@ public class Rule {
                     }
                 }
             }
+            gameInfo.setColumnPosition(gameInfo.getColumnPosition() + 1);
         }
 
         return true;
@@ -242,35 +256,51 @@ public class Rule {
     private boolean moveFigureInDesk(int[][] shape, ObjectMove objectMove, GameInfo gameInfo) {
         boolean move = true;
         if (objectMove != null && ((objectMove == ObjectMove.LEFT) && (gameInfo.getRowPosition() > 0))) {
-            move = moveAndCheckMoveRightOrLeft(gameInfo, shape, 0);
+            move = moveAndCheckMoveRightOrLeft(gameInfo, shape, 0, objectMove);
         } else if (objectMove != null && ((objectMove == ObjectMove.RIGHT) && (gameInfo.getRowPosition() <= 10))) {
-            move = moveAndCheckMoveRightOrLeft(gameInfo, shape, shape.length);
+            move = moveAndCheckMoveRightOrLeft(gameInfo, shape, shape.length - 1, objectMove);
+        } else if (objectMove != null && ((objectMove == ObjectMove.NONE))) {
+            move = moveAndCheckMoveRightOrLeft(gameInfo, shape, 0, objectMove);
         }
         return move;
     }
 
-    private boolean moveAndCheckMoveRightOrLeft(GameInfo gameInfo, int[][] shape, int lastIndex) {
+    private boolean moveAndCheckMoveRightOrLeft(GameInfo gameInfo, int[][] shape, int lastIndex, ObjectMove objectMove) {
         boolean move = true;
         int col = gameInfo.getColumnPosition();
         int lastRowIndex = 0;
-        if (lastIndex == 0) {
+        if (objectMove == ObjectMove.LEFT) {
             lastRowIndex = gameInfo.getRowPosition() - 1;
-        } else {
-            lastRowIndex = gameInfo.getRowPosition() + shape[0].length + 1;
+        } else if (objectMove == ObjectMove.RIGHT) {
+            lastRowIndex = gameInfo.getRowPosition() + shape[0].length;
+            if (lastRowIndex < shape.length - 1) {
+                lastRowIndex++;
+            } else {
+                lastRowIndex = shape.length - 1;
+            }
         }
 
         for (int i = shape.length - 1; i >= 0; i--) {
-            if(col < 0) {
+            if (col < 0) {
                 return move;
             }
             for (int j = 0; j < shape[i].length; j++) {
-                desk[col][gameInfo.getRowPosition() + j] = shape[i][j];
+                if (desk[col][gameInfo.getRowPosition() + j] == 0) {
+                    desk[col][gameInfo.getRowPosition() + j] = shape[i][j];
+                }
 
-                if ((desk[col][lastRowIndex] == 1) && (move)) {
-                    if (shape[i][lastIndex - 1] == 1) {
+                if (objectMove != ObjectMove.NONE) {
+                    if (lastRowIndex >= 0) {
+                        if ((desk[col][lastRowIndex] == 1) && (move)) {
+                            if (shape[i][lastIndex] == 1) {
+                                move = false;
+                            }
+                        }
+                    } else {
                         move = false;
                     }
                 }
+
             }
 
             col--;
@@ -280,8 +310,8 @@ public class Rule {
 
     private int[][] figureMoveDown(int[][] shape) {
 
-        for (int i = 0; i < shape[shape.length - 1].length; i ++) {
-            if(shape[shape.length - 1][i] == 1) {
+        for (int i = 0; i < shape[shape.length - 1].length; i++) {
+            if (shape[shape.length - 1][i] == 1) {
                 return shape;
             }
         }

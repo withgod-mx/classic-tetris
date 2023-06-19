@@ -159,7 +159,7 @@ public class RuleTest {
         rule.desk = d;
         rule.setPreviousRowPosition(2);
         rule.setPreviousColumnPosition(4);
-        rule.clearPreviousPositionShape(3, figureBuilder.getShapes().get(2).getShape());
+        rule.clearPreviousPositionShape(null, figureBuilder.getShapes().get(2).getShape());
         printResult(rule.desk);
     }
 

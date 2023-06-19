@@ -48,6 +48,40 @@ public class Engine {
         }
     }
 
+    public void strat() throws IOException, InterruptedException {
+        boolean lose = false;
+        Figures figures = getRandomFigure(0);
+        int nextFigureIndex = random.nextInt(7) + 1;
+        drawNextShape(nextFigureIndex);
+        int timer = 200;
+        while (!lose) {
+
+            KeyStroke keyStroke = terminal.pollInput();
+            rule.clearPreviousPositionShape(gameInfo, figures.getShape());
+            boolean isMove = moveNext(keyStroke, figures);
+
+            calculateAndDraw(rule.desk);
+
+            if ((!isMove) && (gameInfo.getColumnPosition() == 0)) {
+                lose = true;
+            } else if (!isMove) {
+                gameInfo.setColumnPosition(0);
+                gameInfo.setRowPosition(3);
+                gameInfo.setPreviousColumnPosition(0);
+                gameInfo.setPreviousColumnPosition(0);
+                crashLines(rule.desk);
+            }
+
+
+            Thread.sleep(timer);
+        }
+
+        if (lose) {
+            lostAnimation();
+        }
+
+    }
+
     public void startGame() throws InterruptedException, IOException {
         boolean lose = false;
         int columnPosition = 0;
@@ -59,7 +93,8 @@ public class Engine {
         drawNextShape(nextFigureIndex);
         while (!lose) {
             KeyStroke keyStroke = terminal.pollInput();
-            rule.clearPreviousPositionShape(columnPosition -  1, figures.getShape());
+            rule.clearPreviousPositionShape(gameInfo, figures.getShape());
+            //boolean isMove = moveNext(keyStroke, figures);
             if(keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowRight)) {
                 if (rowPosition + figures.getShape()[0].length == 10) {
                     //rule.clearPreviousPositionShape(columnPosition - 1, figures.getShape());
@@ -132,6 +167,8 @@ public class Engine {
             figure.setShape(rule.figureRotate(figure.getShape()));
         } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowDown)) {
 
+        } else {
+            isMove = rule.moveAndCheckNextFigure(gameInfo, figure, ObjectMove.NONE);
         }
 
         return isMove;
@@ -167,9 +204,9 @@ public class Engine {
     }
 
     private void crashAnimation(List<Integer> lineCrash) throws IOException, InterruptedException {
-        int rowPoint = 25;
-        for (Integer line: lineCrash) {
 
+        for (Integer line: lineCrash) {
+            int rowPoint = 25;
             for (int i = 0; i < 10; i++) {
                 rowPoint += 2;
                 windowDraw.draw(" .", rowPoint, line + 1);
@@ -191,6 +228,7 @@ public class Engine {
     }
 
     public Figures getRandomFigure(int index) {
+        index = 2;
         if(index == 0) {
             index = random.nextInt(7) + 1;
         }

@@ -23,7 +23,8 @@ public class Main {
             mainGameWindow.buildGameWindow();
             Engine engine = new Engine(terminal);
             Thread.sleep(1000);
-            engine.startGame();
+            //engine.startGame();
+            engine.strat();
 
 
         } catch(IOException e) {
