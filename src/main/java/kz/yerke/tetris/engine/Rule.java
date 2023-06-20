@@ -202,7 +202,6 @@ public class Rule {
             } else {
                 boolean moveNextLeft = moveFigureInDesk(figure.getShape(), objectMove, gameInfo);
                 if (moveNextLeft) {
-                    //gameInfo.setPreviousRowPosition(gameInfo.getRowPosition());
                     gameInfo.setRowPosition(gameInfo.getRowPosition() - 1);
 
                 }
@@ -256,56 +255,97 @@ public class Rule {
     private boolean moveFigureInDesk(int[][] shape, ObjectMove objectMove, GameInfo gameInfo) {
         boolean move = true;
         if (objectMove != null && ((objectMove == ObjectMove.LEFT) && (gameInfo.getRowPosition() > 0))) {
-            move = moveAndCheckMoveRightOrLeft(gameInfo, shape, 0, objectMove);
+            moveAndCheckMoveRightOrLeft(gameInfo, shape);
+            move = checkMoveLeft(gameInfo, shape);
         } else if (objectMove != null && ((objectMove == ObjectMove.RIGHT) && (gameInfo.getRowPosition() <= 10))) {
-            move = moveAndCheckMoveRightOrLeft(gameInfo, shape, shape.length - 1, objectMove);
+            moveAndCheckMoveRightOrLeft(gameInfo, shape);
+            move = checkMoveRight(gameInfo, shape);
         } else if (objectMove != null && ((objectMove == ObjectMove.NONE))) {
-            move = moveAndCheckMoveRightOrLeft(gameInfo, shape, 0, objectMove);
+            moveAndCheckMoveRightOrLeft(gameInfo, shape);
         }
         return move;
     }
 
-    private boolean moveAndCheckMoveRightOrLeft(GameInfo gameInfo, int[][] shape, int lastIndex, ObjectMove objectMove) {
-        boolean move = true;
-        int col = gameInfo.getColumnPosition();
-        int lastRowIndex = 0;
-        if (objectMove == ObjectMove.LEFT) {
-            lastRowIndex = gameInfo.getRowPosition() - 1;
-        } else if (objectMove == ObjectMove.RIGHT) {
-            lastRowIndex = gameInfo.getRowPosition() + shape[0].length;
-            if (lastRowIndex < shape.length - 1) {
-                lastRowIndex++;
-            } else {
-                lastRowIndex = shape.length - 1;
+    private boolean checkMoveRight(GameInfo gameInfo, int[][] shape) {
+        boolean isMove = true;
+        int col = 0;
+        int row = 0;
+        if ((gameInfo.getColumnPosition() > 0) && (gameInfo.getColumnPosition() < 19)) {
+            col = gameInfo.getColumnPosition() + 1;
+        } else if (gameInfo.getColumnPosition() == 19) {
+            col = gameInfo.getColumnPosition();
+        }
+
+        if(col == 0) {
+            return true;
+        }
+
+        if (gameInfo.getRowPosition() + shape[0].length + 1 < 9) {
+            row = gameInfo.getRowPosition() + shape[0].length + 1;
+        } else {
+            row = 9;
+        }
+
+        for (int i = 0; i < shape[0].length; i++) {
+
+            for (int j = shape.length - 1; j >= 0; j--) {
+                if(shape[j][i] == 1) {
+                    if (desk[col - j][row - i] == 1) {
+                        return false;
+                    }
+                }
+            }
+
+        }
+
+        return isMove;
+    }
+
+    private boolean checkMoveLeft(GameInfo gameInfo, int[][] shape) {
+        boolean isMove = true;
+        int col = 0;
+        int row = 0;
+        if ((gameInfo.getColumnPosition() > 0) && (gameInfo.getColumnPosition() < 19)) {
+            col = gameInfo.getColumnPosition() + 1;
+        } else if (gameInfo.getColumnPosition() == 19) {
+            col = gameInfo.getColumnPosition();
+        }
+
+        if(col == 0) {
+            return true;
+        }
+
+        if (gameInfo.getRowPosition() > 0) {
+            row = gameInfo.getRowPosition() - 1;
+        }
+
+        for (int i = 0; i < shape[0].length; i++) {
+            for (int j = 0; j < shape.length; j++) {
+
+                if(shape[j][i] == 1) {
+                    if (desk[col - j][row + i] == 1) {
+                        return false;
+                    }
+                }
             }
         }
 
+        return isMove;
+    }
+
+    private void moveAndCheckMoveRightOrLeft(GameInfo gameInfo, int[][] shape) {
+        int col = gameInfo.getColumnPosition();
         for (int i = shape.length - 1; i >= 0; i--) {
             if (col < 0) {
-                return move;
+                return;
             }
             for (int j = 0; j < shape[i].length; j++) {
                 if (desk[col][gameInfo.getRowPosition() + j] == 0) {
                     desk[col][gameInfo.getRowPosition() + j] = shape[i][j];
                 }
-
-                if (objectMove != ObjectMove.NONE) {
-                    if (lastRowIndex >= 0) {
-                        if ((desk[col][lastRowIndex] == 1) && (move)) {
-                            if (shape[i][lastIndex] == 1) {
-                                move = false;
-                            }
-                        }
-                    } else {
-                        move = false;
-                    }
-                }
-
             }
-
             col--;
         }
-        return move;
     }
 
     private int[][] figureMoveDown(int[][] shape) {

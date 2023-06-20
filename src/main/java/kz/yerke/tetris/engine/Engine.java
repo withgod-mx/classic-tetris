@@ -48,12 +48,12 @@ public class Engine {
         }
     }
 
-    public void strat() throws IOException, InterruptedException {
+    public void start() throws IOException, InterruptedException {
         boolean lose = false;
         Figures figures = getRandomFigure(0);
         int nextFigureIndex = random.nextInt(7) + 1;
         drawNextShape(nextFigureIndex);
-        int timer = 200;
+        int timer = 500;
         while (!lose) {
 
             KeyStroke keyStroke = terminal.pollInput();
@@ -70,6 +70,8 @@ public class Engine {
                 gameInfo.setPreviousColumnPosition(0);
                 gameInfo.setPreviousColumnPosition(0);
                 crashLines(rule.desk);
+                nextFigureIndex = random.nextInt(7) + 1;
+                figures = getRandomFigure(nextFigureIndex);
             }
 
 
@@ -82,6 +84,7 @@ public class Engine {
 
     }
 
+    @Deprecated
     public void startGame() throws InterruptedException, IOException {
         boolean lose = false;
         int columnPosition = 0;
@@ -94,26 +97,21 @@ public class Engine {
         while (!lose) {
             KeyStroke keyStroke = terminal.pollInput();
             rule.clearPreviousPositionShape(gameInfo, figures.getShape());
-            //boolean isMove = moveNext(keyStroke, figures);
             if(keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowRight)) {
                 if (rowPosition + figures.getShape()[0].length == 10) {
-                    //rule.clearPreviousPositionShape(columnPosition - 1, figures.getShape());
                     figures.setShape(rule.figureMoveRightPosition(figures.getShape()));
                 } else {
                     rowPosition++;
                 }
             } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowLeft)) {
                 if (rowPosition == 0) {
-                    //rule.clearPreviousPositionShape(columnPosition - 1, figures.getShape());
                     figures.setShape(rule.figureMoveLeftPosition(figures.getShape()));
                 } else {
                     rowPosition--;
                 }
             } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowUp)) {
-                //rule.clearPreviousPositionShape(columnPosition -  1, figures.getShape());
                 figures.setShape(rule.figureRotate(figures.getShape()));
             } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowDown)) {
-                System.out.println(timer);
                 timer = 0;
             }
 
@@ -157,7 +155,6 @@ public class Engine {
     }
 
     private boolean moveNext(KeyStroke keyStroke, Figures figure) {
-        //rule.clearPreviousPositionShape(gameInfo.getColumnPosition() -  1, figure.getShape());
         boolean isMove = true;
         if(keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowLeft)) {
             isMove = rule.moveAndCheckNextFigure(gameInfo, figure, ObjectMove.LEFT);
@@ -228,7 +225,6 @@ public class Engine {
     }
 
     public Figures getRandomFigure(int index) {
-        index = 2;
         if(index == 0) {
             index = random.nextInt(7) + 1;
         }

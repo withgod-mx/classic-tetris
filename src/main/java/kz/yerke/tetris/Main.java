@@ -24,7 +24,7 @@ public class Main {
             Engine engine = new Engine(terminal);
             Thread.sleep(1000);
             //engine.startGame();
-            engine.strat();
+            engine.start();
 
 
         } catch(IOException e) {
