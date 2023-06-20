@@ -53,13 +53,13 @@ public class Engine {
         Figures figures = getRandomFigure(0);
         int nextFigureIndex = random.nextInt(7) + 1;
         drawNextShape(nextFigureIndex);
+        gameInfo.setPreviousShape(figures.getShape());
         int timer = 500;
         while (!lose) {
-
             KeyStroke keyStroke = terminal.pollInput();
-            rule.clearPreviousPositionShape(gameInfo, figures.getShape());
+            rule.clearPreviousPositionShape(gameInfo, gameInfo.getPreviousShape());
+            gameInfo.setPreviousShape(figures.getShape());
             boolean isMove = moveNext(keyStroke, figures);
-
             calculateAndDraw(rule.desk);
 
             if ((!isMove) && (gameInfo.getColumnPosition() == 0)) {
@@ -70,12 +70,11 @@ public class Engine {
                 gameInfo.setPreviousColumnPosition(0);
                 gameInfo.setPreviousColumnPosition(0);
                 crashLines(rule.desk);
-                nextFigureIndex = random.nextInt(7) + 1;
                 figures = getRandomFigure(nextFigureIndex);
+                nextFigureIndex = random.nextInt(7) + 1;
             }
-
-
             Thread.sleep(timer);
+            drawNextShape(nextFigureIndex);
         }
 
         if (lose) {
@@ -225,6 +224,7 @@ public class Engine {
     }
 
     public Figures getRandomFigure(int index) {
+        index = 2;
         if(index == 0) {
             index = random.nextInt(7) + 1;
         }

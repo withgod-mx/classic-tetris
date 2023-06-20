@@ -9,6 +9,8 @@ public class GameInfo {
     private int previousColumnPosition;
     public int previousRowPosition;
 
+    private int[][] previousShape;
+
     private int speedTimer;
 
     public GameInfo(int rowPosition, int columnPosition, int score, int level, int speedTimer) {
@@ -17,6 +19,14 @@ public class GameInfo {
         this.score = score;
         this.level = level;
         this.speedTimer = speedTimer;
+    }
+
+    public int[][] getPreviousShape() {
+        return previousShape;
+    }
+
+    public void setPreviousShape(int[][] previousShape) {
+        this.previousShape = previousShape;
     }
 
     public int getRowPosition() {

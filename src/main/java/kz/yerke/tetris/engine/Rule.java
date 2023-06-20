@@ -195,7 +195,6 @@ public class Rule {
 
         gameInfo.setPreviousRowPosition(gameInfo.getRowPosition());
         gameInfo.setPreviousColumnPosition(gameInfo.getColumnPosition());
-
         if (objectMove == ObjectMove.LEFT) {
             if (gameInfo.getRowPosition() == 0) {
                 figure.setShape(figureMoveLeftPosition(figure.getShape()));
@@ -203,7 +202,6 @@ public class Rule {
                 boolean moveNextLeft = moveFigureInDesk(figure.getShape(), objectMove, gameInfo);
                 if (moveNextLeft) {
                     gameInfo.setRowPosition(gameInfo.getRowPosition() - 1);
-
                 }
             }
         } else if (objectMove == ObjectMove.RIGHT) {
@@ -219,10 +217,11 @@ public class Rule {
             boolean moveNextRight = moveFigureInDesk(figure.getShape(), objectMove, gameInfo);
         }
 
-        if (gameInfo.getColumnPosition() == desk.length) {
+        if (gameInfo.getColumnPosition() == desk.length - 1) {
+            boolean checkDownMove = checkFigureDownLine(figure.getShape());
             figure.setShape(figureMoveDown(figure.getShape()));
-            return checkFigureDownLine(figure.getShape());
-        } else if (gameInfo.getColumnPosition() < desk.length) {
+            return checkDownMove;
+        } else if (gameInfo.getColumnPosition() < desk.length - 1) {
             int[] shapeLine = figure.getShape()[figure.getShape().length - 1];
 
             if (gameInfo.getColumnPosition() == desk.length - 1) {
@@ -238,6 +237,8 @@ public class Rule {
             }
             gameInfo.setColumnPosition(gameInfo.getColumnPosition() + 1);
         }
+
+
 
         return true;
 
@@ -255,14 +256,12 @@ public class Rule {
     private boolean moveFigureInDesk(int[][] shape, ObjectMove objectMove, GameInfo gameInfo) {
         boolean move = true;
         if (objectMove != null && ((objectMove == ObjectMove.LEFT) && (gameInfo.getRowPosition() > 0))) {
-            moveAndCheckMoveRightOrLeft(gameInfo, shape);
             move = checkMoveLeft(gameInfo, shape);
         } else if (objectMove != null && ((objectMove == ObjectMove.RIGHT) && (gameInfo.getRowPosition() <= 10))) {
-            moveAndCheckMoveRightOrLeft(gameInfo, shape);
             move = checkMoveRight(gameInfo, shape);
-        } else if (objectMove != null && ((objectMove == ObjectMove.NONE))) {
-            moveAndCheckMoveRightOrLeft(gameInfo, shape);
         }
+        moveAndCheckMoveRightOrLeft(gameInfo, shape);
+
         return move;
     }
 
@@ -281,21 +280,22 @@ public class Rule {
         }
 
         if (gameInfo.getRowPosition() + shape[0].length + 1 < 9) {
-            row = gameInfo.getRowPosition() + shape[0].length + 1;
+            row = gameInfo.getRowPosition() + shape[0].length - 1;
         } else {
             row = 9;
         }
 
-        for (int i = 0; i < shape[0].length; i++) {
-
-            for (int j = shape.length - 1; j >= 0; j--) {
-                if(shape[j][i] == 1) {
-                    if (desk[col - j][row - i] == 1) {
+        for (int i = 0; i < shape.length; i++) {
+            if (shape[(shape.length - 1) - i][0] == 1) {
+                if (desk[col - i][row - 1] == 1) {
+                    return false;
+                }
+            } else {
+                if (desk[col - i][row] == 1) {
+                    if(shape[i][shape.length - 2] == 1)
                         return false;
-                    }
                 }
             }
-
         }
 
         return isMove;
@@ -316,16 +316,18 @@ public class Rule {
         }
 
         if (gameInfo.getRowPosition() > 0) {
-            row = gameInfo.getRowPosition() - 1;
+            row = gameInfo.getRowPosition();
         }
 
-        for (int i = 0; i < shape[0].length; i++) {
-            for (int j = 0; j < shape.length; j++) {
-
-                if(shape[j][i] == 1) {
-                    if (desk[col - j][row + i] == 1) {
+        for (int i = 0; i < shape.length; i++) {
+            if (shape[(shape.length - 1) - i][0] == 1) {
+                if (desk[col - i][row - 1] == 1) {
+                    return false;
+                }
+            } else {
+                if (desk[col - i][row] == 1) {
+                    if(shape[(shape.length - 1) - i][1] == 1)
                         return false;
-                    }
                 }
             }
         }
