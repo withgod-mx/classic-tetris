@@ -83,76 +83,6 @@ public class Engine {
 
     }
 
-    @Deprecated
-    public void startGame() throws InterruptedException, IOException {
-        boolean lose = false;
-        int columnPosition = 0;
-        Figures figures = getRandomFigure(0);
-        int rowPosition = (10 / figures.getShape().length);
-        int[][] currentDesk = new int[20][10];
-        int timer = 500;
-        int nextFigureIndex = random.nextInt(7) + 1;
-        drawNextShape(nextFigureIndex);
-        while (!lose) {
-            KeyStroke keyStroke = terminal.pollInput();
-            rule.clearPreviousPositionShape(gameInfo, figures.getShape());
-            if(keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowRight)) {
-                if (rowPosition + figures.getShape()[0].length == 10) {
-                    figures.setShape(rule.figureMoveRightPosition(figures.getShape()));
-                } else {
-                    rowPosition++;
-                }
-            } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowLeft)) {
-                if (rowPosition == 0) {
-                    figures.setShape(rule.figureMoveLeftPosition(figures.getShape()));
-                } else {
-                    rowPosition--;
-                }
-            } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowUp)) {
-                figures.setShape(rule.figureRotate(figures.getShape()));
-            } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowDown)) {
-                timer = 0;
-            }
-
-            boolean move = rule.checkBottomPoint(columnPosition, rowPosition, figures.getShape());
-            if (move) {
-                currentDesk = rule.move(figures.getShape(), columnPosition , rowPosition);
-                columnPosition++;
-            } else {
-                if (columnPosition == 0) {
-                   lose = true;
-                   rowPosition = 3;
-                }
-                columnPosition = 0;
-                figures = getRandomFigure(nextFigureIndex);
-                nextFigureIndex = random.nextInt(7) + 1;
-                drawNextShape(nextFigureIndex);
-                timer = 500;
-                crashLines(rule.desk);
-            }
-
-            calculateAndDraw(currentDesk);
-
-            Thread.sleep(timer);
-
-            if (columnPosition == 20) {
-                columnPosition = 0;
-                figures = getRandomFigure(nextFigureIndex);
-                nextFigureIndex = random.nextInt(7) + 1;
-                drawNextShape(nextFigureIndex);
-                rowPosition = 3;
-                rule.setPreviousColumnPosition(-1);
-                rule.setPreviousRowPosition(-1);
-                timer = 500;
-                crashLines(rule.desk);
-            }
-        }
-
-        if (lose) {
-            lostAnimation();
-        }
-    }
-
     private boolean moveNext(KeyStroke keyStroke, Figures figure) {
         boolean isMove = true;
         if(keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowLeft)) {
@@ -224,7 +154,7 @@ public class Engine {
     }
 
     public Figures getRandomFigure(int index) {
-        index = 2;
+        //index = 2;
         if(index == 0) {
             index = random.nextInt(7) + 1;
         }

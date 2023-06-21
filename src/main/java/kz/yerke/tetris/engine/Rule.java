@@ -217,9 +217,6 @@ public class Rule {
             moveFigureInDesk(figure.getShape(), objectMove, gameInfo);
         }
 
-        if (gameInfo.getColumnPosition() == 16) {
-            System.out.println("BreakPoint");
-        }
 
         if (gameInfo.getColumnPosition() == desk.length - 1) {
             boolean checkDownMove = checkFigureDownLine(figure.getShape(), gameInfo);
@@ -230,43 +227,26 @@ public class Rule {
         } else if (gameInfo.getColumnPosition() < desk.length - 1) {
 
 
-            int[] shapeLine = figure.getShape()[figure.getShape().length - 1];
+            int[] shapeLine = figure.getShape()[figure.getShape().length - 1]; ///checkFinishFigureLine(figure.getShape());
 
             if (gameInfo.getColumnPosition() == desk.length - 1) {
                 return false;
             }
 
-            int column = gameInfo.getColumnPosition() + 1;
+            for (int i = 0; i < shapeLine.length; i++) {
 
-            for (int i = figure.getShape().length - 1; i >= 0; i--) {
-                for (int j = 0; j < figure.getShape()[i].length; j++) {
-                    if(column  == 0) {
-                        return true;
-                    }
-
-                    if ((figure.getShape()[i][j] == 1) &&) {
-
-                    }
-
-                    if (desk[column][gameInfo.getRowPosition() + j] == 1) {
-                        if (figure.getShape()[i][j] == 1) {
-                            return false;
-                        }
-                    }
-                }
-
-                column--;
-            }
-
-            /*for (int i = 0; i < shapeLine.length; i++) {
-
-
-                if (desk[gameInfo.getColumnPosition() + 1][gameInfo.getRowPosition() + i] == 1) {
-                    if (shapeLine[i] == 1) {
+                if(shapeLine[i] == 1) {
+                    if (desk[gameInfo.getColumnPosition() + 1][gameInfo.getRowPosition() + i] == 1) {
                         return false;
                     }
+                } else {
+                    if (desk[gameInfo.getColumnPosition()][gameInfo.getRowPosition() + i] == 1) {
+                        if (figure.getShape()[figure.getShape().length - 2][i] == 1)
+                            return false;
+                    }
                 }
-            }*/
+
+            }
             gameInfo.setColumnPosition(gameInfo.getColumnPosition() + 1);
         }
 
@@ -275,6 +255,17 @@ public class Rule {
         return true;
 
     }
+
+    /*private int[] checkFinishFigureLine(int[][] shape) {
+        for (int i = shape.length - 1; i >= 0; i--) {
+            for (int j = 0; j < shape[i].length; j++) {
+                if (shape[i][j] == 1) {
+                    return shape[i];
+                }
+            }
+        }
+        return shape[0];
+    }*/
 
     public boolean checkFigureDownLine(int[][] shape, GameInfo gameInfo) {
 
@@ -334,6 +325,9 @@ public class Rule {
                     return false;
                 }
             } else {
+                if (col - i < 0) {
+                    return true;
+                }
                 if (desk[col - i][row] == 1) {
                     if(shape[i][shape.length - 2] == 1)
                         return false;
@@ -368,6 +362,9 @@ public class Rule {
                     return false;
                 }
             } else {
+                if (col - i < 0) {
+                    return true;
+                }
                 if (desk[col - i][row] == 1) {
                     if(shape[(shape.length - 1) - i][1] == 1)
                         return false;
