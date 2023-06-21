@@ -20,6 +20,7 @@ public class InitialWindowGUI {
     public void drawInitWindow() throws IOException {
         drawTetrisText();
         terminal.setForegroundColor(TextColor.ANSI.YELLOW);
+        windowDraw.draw("→", 27, 10);
         windowDraw.draw("Start Game", 30, 10);
         windowDraw.draw("Language", 30, 12);
         windowDraw.draw("Exit", 30, 14);
