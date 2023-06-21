@@ -10,6 +10,7 @@ import kz.yerke.tetris.engine.LanguageSelector;
 import kz.yerke.tetris.gui.InitialWindowGUI;
 import kz.yerke.tetris.gui.LanguageSelectWindow;
 import kz.yerke.tetris.gui.MainGameWindow;
+import kz.yerke.tetris.model.GameEventType;
 import kz.yerke.tetris.model.MainSettings;
 
 import java.io.IOException;
@@ -38,7 +39,6 @@ public class Main {
                 switch (mainSettings.getEventType()) {
                     case INIT -> {
                         terminal.clearScreen();
-                        //updateLocalizationText();
                         initialWindowGUI.updateLocalizationText(mainSettings);
                         initialWindowGUI.drawInitWindow();
                         initEngine.start();
@@ -56,6 +56,11 @@ public class Main {
                         mainGameWindow.updateLocalizationText(mainSettings);
                         Thread.sleep(1000);
                         engine.start();
+                        terminal.clearScreen();
+                        mainGameWindow.gameOverBaner();
+                        mainGameWindow.gameOverText(mainSettings.getLocalizationText("finish-text"));
+                        engine.gameOverEvent();
+                        mainSettings.setEventType(GameEventType.INIT);
 
                     }
                     case EXIT -> {

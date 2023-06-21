@@ -270,9 +270,11 @@ public class Rule {
     public boolean checkFigureDownLine(int[][] shape, GameInfo gameInfo) {
 
         for (int i = 0; i < shape[shape.length - 1].length; i++) {
-            if(desk[gameInfo.getColumnPosition()][gameInfo.getRowPosition() + i] == 1) {
-                if (shape[shape.length - 2][i] == 1) {
-                    return false;
+            if(gameInfo.getRowPosition() + i < 10) {
+                if(desk[gameInfo.getColumnPosition()][gameInfo.getRowPosition() + i] == 1) {
+                    if (shape[shape.length - 2][i] == 1) {
+                        return false;
+                    }
                 }
             }
         }

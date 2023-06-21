@@ -67,6 +67,7 @@ public class MainSettings {
         localization.put("ru-right", "НАПРАВО");
         localization.put("ru-fast", "УСКОРИТЬ");
         localization.put("ru-rotation", "ПОВОРОТ");
+        localization.put("ru-finish-text", "Нажмите Enter чтов выйти в главное меню");
 
      /*
         English
@@ -83,6 +84,7 @@ public class MainSettings {
         localization.put("en-right", "RIGHT");
         localization.put("en-fast", "FAST");
         localization.put("en-rotation", "ROTATION");
+        localization.put("en-finish-text", "Press Enter to exit to the main menu");
 
         /*
         Kazakh
@@ -99,7 +101,7 @@ public class MainSettings {
         localization.put("kz-right", "ОҢҒА");
         localization.put("kz-fast", "ТЕЗДЕТУ");
         localization.put("kz-rotation", "БҰРУ");
-
+        localization.put("kz-finish-text", "Негізгі мәзірге шығу үшін Enter пернесін басыңыз");
 
 
     }

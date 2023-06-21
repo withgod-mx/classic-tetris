@@ -79,7 +79,29 @@ public class Engine {
 
         if (lose) {
             lostAnimation();
+            updateParameter();
         }
+
+    }
+
+    public void gameOverEvent() throws IOException {
+        boolean close = false;
+        while (!close) {
+            KeyStroke keyStroke = terminal.pollInput();
+            if (keyStroke != null && (keyStroke.getKeyType() == KeyType.Enter)) {
+                close = true;
+            }
+        }
+    }
+
+    private void updateParameter() {
+        rule.desk = new int[20][10];
+        gameInfo.setPreviousShape(new int[1][1]);
+        gameInfo.setPreviousRowPosition(0);
+        gameInfo.setColumnPosition(0);
+        gameInfo.setScore(0);
+        gameInfo.setLevel(1);
+        gameInfo.setRowPosition(3);
 
     }
 

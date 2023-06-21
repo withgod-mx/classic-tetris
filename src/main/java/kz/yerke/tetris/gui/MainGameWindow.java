@@ -55,4 +55,20 @@ public class MainGameWindow {
         windowDraw.draw("↓ " + mainSettings.getLocalizationText("fast"), 55, 5);
     }
 
+    public void gameOverBaner() throws IOException {
+        terminal.setForegroundColor(TextColor.ANSI.GREEN);
+        windowDraw.draw(" ____                                     _____                           ", 2, 2);
+        windowDraw.draw("/\\  _`\\                                  /\\  __`\\                         ", 2, 3);
+        windowDraw.draw("\\ \\ \\L\\_\\     __      ___ ___      __    \\ \\ \\/\\ \\  __  __     __   _ __  ", 2, 4);
+        windowDraw.draw(" \\ \\ \\L_L   /'__`\\  /' __` __`\\  /'__`\\   \\ \\ \\ \\ \\/\\ \\/\\ \\  /'__`\\/\\`'__\\", 2, 5);
+        windowDraw.draw("  \\ \\ \\/, \\/\\ \\L\\.\\_/\\ \\/\\ \\/\\ \\/\\  __/    \\ \\ \\_\\ \\ \\ \\_/ |/\\  __/\\ \\ \\/ ", 2, 6);
+        windowDraw.draw("   \\ \\____/\\ \\__/.\\_\\ \\_\\ \\_\\ \\_\\ \\____\\    \\ \\_____\\ \\___/ \\ \\____\\\\ \\_\\ ", 2, 7);
+        windowDraw.draw("    \\/___/  \\/__/\\/_/\\/_/\\/_/\\/_/\\/____/     \\/_____/\\/__/   \\/____/ \\/_/ ", 2, 8);
+
+    }
+
+    public void gameOverText(String text) throws IOException {
+        windowDraw.draw(text,  20, 20);
+    }
+
 }
