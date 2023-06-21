@@ -26,7 +26,7 @@ public class GameInfo {
     }
 
     public void setPreviousShape(int[][] previousShape) {
-        this.previousShape = previousShape;
+        this.previousShape = previousShape.clone();
     }
 
     public int getRowPosition() {
