@@ -3,6 +3,7 @@ package kz.yerke.tetris.gui;
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.terminal.Terminal;
+import kz.yerke.tetris.model.MainSettings;
 
 import java.io.IOException;
 
@@ -21,11 +22,19 @@ public class InitialWindowGUI {
         drawTetrisText();
         terminal.setForegroundColor(TextColor.ANSI.YELLOW);
         windowDraw.draw("→", 27, 10);
-        windowDraw.draw("Start Game", 30, 10);
+/*        windowDraw.draw("Start Game", 30, 10);
         windowDraw.draw("Language", 30, 12);
-        windowDraw.draw("Exit", 30, 14);
-
+        windowDraw.draw("Exit", 30, 14);*/
     }
+
+    public void updateLocalizationText(MainSettings mainSettings) throws IOException {
+        terminal.setForegroundColor(TextColor.ANSI.YELLOW);
+        windowDraw.draw(mainSettings.getLocalizationText("start-game"), 30, 10);
+        windowDraw.draw(mainSettings.getLocalizationText("language"), 30, 12);
+        windowDraw.draw(mainSettings.getLocalizationText("exit"), 30, 14);
+    }
+
+
 
     private void drawTetrisText() throws IOException {
         terminal.setForegroundColor(TextColor.ANSI.CYAN);

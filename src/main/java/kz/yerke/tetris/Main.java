@@ -6,7 +6,9 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import kz.yerke.tetris.engine.Engine;
 import kz.yerke.tetris.engine.InitEngine;
+import kz.yerke.tetris.engine.LanguageSelector;
 import kz.yerke.tetris.gui.InitialWindowGUI;
+import kz.yerke.tetris.gui.LanguageSelectWindow;
 import kz.yerke.tetris.gui.MainGameWindow;
 import kz.yerke.tetris.model.MainSettings;
 
@@ -27,23 +29,31 @@ public class Main {
             MainSettings mainSettings = new MainSettings();
             InitEngine initEngine = new InitEngine(mainSettings, terminal);
             Engine engine = new Engine(terminal);
+            LanguageSelectWindow languageSelectWindow = new LanguageSelectWindow(terminal);
+            LanguageSelector languageSelector = new LanguageSelector(mainSettings, terminal);
             boolean quite = false;
 
             while (!quite) {
 
                 switch (mainSettings.getEventType()) {
                     case INIT -> {
+                        terminal.clearScreen();
+                        //updateLocalizationText();
+                        initialWindowGUI.updateLocalizationText(mainSettings);
                         initialWindowGUI.drawInitWindow();
                         initEngine.start();
 
                     }
                     case LANGUAGE -> {
-
+                        terminal.clearScreen();
+                        languageSelectWindow.drawLanguageWindow();
+                        languageSelector.start();
 
                     }
                     case START_GAME -> {
                         terminal.clearScreen();
                         mainGameWindow.buildGameWindow();
+                        mainGameWindow.updateLocalizationText(mainSettings);
                         Thread.sleep(1000);
                         engine.start();
 
