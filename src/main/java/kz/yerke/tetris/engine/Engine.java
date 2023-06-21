@@ -176,7 +176,7 @@ public class Engine {
     }
 
     public Figures getRandomFigure(int index) {
-        //index = 2;
+        //index = 5;
         if(index == 0) {
             index = random.nextInt(7) + 1;
         }
