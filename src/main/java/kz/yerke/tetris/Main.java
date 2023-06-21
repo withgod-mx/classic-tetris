@@ -5,6 +5,7 @@ import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import kz.yerke.tetris.engine.Engine;
+import kz.yerke.tetris.gui.InitialWindowGUI;
 import kz.yerke.tetris.gui.MainGameWindow;
 
 import java.io.IOException;
@@ -19,12 +20,16 @@ public class Main {
             Terminal terminal = defaultTerminalFactory.createTerminal();
             terminal.setCursorVisible(false);
             screen = new TerminalScreen(terminal);
+
+            InitialWindowGUI initialWindowGUI = new InitialWindowGUI(terminal);
+            initialWindowGUI.drawInitWindow();
+
+
             MainGameWindow mainGameWindow = new MainGameWindow(terminal);
-            mainGameWindow.buildGameWindow();
+            //mainGameWindow.buildGameWindow();
             Engine engine = new Engine(terminal);
             Thread.sleep(1000);
-            //engine.startGame();
-            engine.start();
+            //engine.start();
 
 
         } catch(IOException e) {

@@ -392,14 +392,6 @@ public class Rule {
 
     private int[][] figureMoveDown(int[][] shape, GameInfo gameInfo) {
 
-        /*for (int i = 0; i < shape[shape.length - 1].length; i++) {
-            if(desk[gameInfo.getColumnPosition()][gameInfo.getRowPosition() + i] == 1) {
-                if (shape[shape.length - 1][i] == 1) {
-                    return shape;
-                }
-            }
-        }*/
-
         int[] cash = new int[shape[0].length - 1];
 
         for (int i = shape.length - 1; i >= 0; i--) {
