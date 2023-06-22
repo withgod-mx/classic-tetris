@@ -45,7 +45,6 @@ public class InitEngine {
                     }
                 }
 
-
             } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowUp)) {
                 switch (this.mainSettings.getEventType()) {
                     case EXIT -> {

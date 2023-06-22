@@ -3,8 +3,6 @@ Y
 )src/main/java/org/example/Tutorial04.java,e/c/ec77c4789c76c802ed47da03c8b41a41283e10fd
 7
 pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
-`
-0src/main/java/kz/yerke/tetris/model/Figures.java,b/8/b845252cde62e5d37e750a4ee3a11096a67273a7
 f
 6src/main/java/kz/yerke/tetris/model/GameEventType.java,2/2/22730b698344412594f902bce9c9ddaa5f5d76e8
 Y
@@ -17,5 +15,5 @@ k
 ;src/main/java/kz/yerke/tetris/gui/LanguageSelectWindow.java,7/1/71c7e80d6bf9c83a940351a11767f265d19feee6
 g
 7src/main/java/kz/yerke/tetris/gui/InitialWindowGUI.java,5/a/5a81d4d13661a3a4dbedd39840613f9d196e0a3f
-d
-4src/main/java/kz/yerke/tetris/engine/InitEngine.java,8/7/8722fcc2d9e21539b4ab84bb7d5b509a390bc3f9
+j
+:src/main/java/kz/yerke/tetris/engine/LanguageSelector.java,7/5/75bafd73742d58327e485bbf67a833c0387273fb

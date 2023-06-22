@@ -54,7 +54,8 @@ public class Engine {
         int nextFigureIndex = random.nextInt(7) + 1;
         drawNextShape(nextFigureIndex);
         gameInfo.setPreviousShape(figures.getShape());
-        int timer = 500;
+
+        int timer = 300;
         while (!lose) {
             KeyStroke keyStroke = terminal.pollInput();
             rule.clearPreviousPositionShape(gameInfo, gameInfo.getPreviousShape());
@@ -72,8 +73,9 @@ public class Engine {
                 crashLines(rule.desk);
                 figures = getRandomFigure(nextFigureIndex);
                 nextFigureIndex = random.nextInt(7) + 1;
+                gameInfo.setSpeedTimer(300);
             }
-            Thread.sleep(timer);
+            Thread.sleep(gameInfo.getSpeedTimer());
             drawNextShape(nextFigureIndex);
         }
 
@@ -112,9 +114,15 @@ public class Engine {
         } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowRight)) {
             isMove = rule.moveAndCheckNextFigure(gameInfo, figure, ObjectMove.RIGHT);
         } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowUp)) {
+            rule.clearPreviousPositionShape(gameInfo, figure.getShape());
             figure.setShape(rule.figureRotate(figure.getShape()));
+            gameInfo.setPreviousShape(figure.getShape());
+            isMove = rule.moveAndCheckNextFigure(gameInfo, figure, ObjectMove.NONE);
         } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowDown)) {
-
+            if(gameInfo.getColumnPosition() > 3) {
+                gameInfo.setSpeedTimer(0);
+            }
+            isMove = rule.moveAndCheckNextFigure(gameInfo, figure, ObjectMove.NONE);
         } else {
             isMove = rule.moveAndCheckNextFigure(gameInfo, figure, ObjectMove.NONE);
         }
@@ -176,7 +184,7 @@ public class Engine {
     }
 
     public Figures getRandomFigure(int index) {
-        //index = 5;
+        //index = 2;
         if(index == 0) {
             index = random.nextInt(7) + 1;
         }

@@ -10,16 +10,6 @@ import java.util.List;
 public class Rule {
 
     public int[][] desk = new int[20][10];
-    public int previousRowPosition = -1;
-    public int previousColumnPosition = -1;
-
-    public void setPreviousRowPosition(int previousRowPosition) {
-        this.previousRowPosition = previousRowPosition;
-    }
-
-    public void setPreviousColumnPosition(int previousColumnPosition) {
-        this.previousColumnPosition = previousColumnPosition;
-    }
 
     public List<Integer> checkColumnForDestroy() {
         List<Integer> columns = new ArrayList<>();
@@ -38,44 +28,6 @@ public class Rule {
             }
         }
         return columns;
-    }
-
-    public int[][] move(int[][] shape, int columnPosition, int rowPosition) {
-
-        if (previousRowPosition < 0) {
-            previousRowPosition = rowPosition;
-        }
-
-        if (previousColumnPosition < 0) {
-            previousColumnPosition = columnPosition;
-        }
-
-        if (columnPosition < 0) {
-            return desk;
-        }
-
-        //clearPreviousPositionShape(columnPosition - 1, shape);
-
-        for (int i = shape.length - 1; i >= 0; i--) {
-
-            if (columnPosition < 0) {
-                previousRowPosition = rowPosition;
-                previousColumnPosition = columnPosition;
-                return desk;
-            }
-
-            for (int j = 0; j < shape[i].length; j++) {
-                if (desk[columnPosition][rowPosition + j] < 1)
-                    desk[columnPosition][rowPosition + j] = shape[i][j];
-            }
-
-            columnPosition--;
-
-        }
-
-        previousRowPosition = rowPosition;
-        previousColumnPosition = columnPosition;
-        return desk;
     }
 
     public void clearPreviousPositionShape(GameInfo gameInfo, int[][] shape) {
@@ -217,6 +169,8 @@ public class Rule {
             moveFigureInDesk(figure.getShape(), objectMove, gameInfo);
         }
 
+        int freeLine = getFreeLineByFigure(figure.getShape());
+
 
         if (gameInfo.getColumnPosition() == desk.length - 1) {
             boolean checkDownMove = checkFigureDownLine(figure.getShape(), gameInfo);
@@ -227,7 +181,9 @@ public class Rule {
         } else if (gameInfo.getColumnPosition() < desk.length - 1) {
 
 
-            int[] shapeLine = figure.getShape()[figure.getShape().length - 1]; ///checkFinishFigureLine(figure.getShape());
+            //int[] shapeLine = figure.getShape()[figure.getShape().length - 1]; ///checkFinishFigureLine(figure.getShape());
+            int[] shapeLine = figure.getShape()[(figure.getShape().length - 1) - freeLine]; ///checkFinishFigureLine(figure.getShape());
+
 
             if (gameInfo.getColumnPosition() == desk.length - 1) {
                 return false;
@@ -235,13 +191,15 @@ public class Rule {
 
             for (int i = 0; i < shapeLine.length; i++) {
 
-                if(shapeLine[i] == 1) {
-                    if (desk[gameInfo.getColumnPosition() + 1][gameInfo.getRowPosition() + i] == 1) {
-                        return false;
+                if (freeLine == 0) {
+                    if(shapeLine[i] == 1) {
+                        if (desk[gameInfo.getColumnPosition() + 1][gameInfo.getRowPosition() + i] == 1) {
+                            return false;
+                        }
                     }
                 } else {
-                    if (desk[gameInfo.getColumnPosition()][gameInfo.getRowPosition() + i] == 1) {
-                        if (figure.getShape()[figure.getShape().length - 2][i] == 1)
+                    if (desk[(gameInfo.getColumnPosition() + 1) - freeLine][gameInfo.getRowPosition() + i] == 1) {
+                        if (shapeLine[i] == 1)
                             return false;
                     }
                 }
@@ -254,6 +212,19 @@ public class Rule {
 
         return true;
 
+    }
+
+    private int getFreeLineByFigure(int[][] shape) {
+        int index = 0;
+        for (int i = shape.length - 1; i >= 0; i--) {
+            for (int j = 0; j < shape[i].length; j++) {
+                if (shape[i][j] == 1) {
+                    return index;
+                }
+            }
+            index++;
+        }
+        return index;
     }
 
     public boolean checkFigureDownLine(int[][] shape, GameInfo gameInfo) {
