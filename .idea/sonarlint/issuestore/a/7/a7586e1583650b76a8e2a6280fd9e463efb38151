@@ -1,0 +1,12 @@
+
+s	java:S135O"YReduce the total number of break and continue statements in this loop to use at most one.(Ð¯„üÿÿÿÿÿ
+P
+java:S1141T"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ
+h
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.(Çµí‘
+P
+java:S1874<"5Remove this use of "TextCharacter"; it is deprecated.(äÁÉ°úÿÿÿÿ
+y
+java:S2142W"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ô¡ß®üÿÿÿÿ
+E
+java:S2093"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ

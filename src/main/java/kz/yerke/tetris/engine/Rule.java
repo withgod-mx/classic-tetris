@@ -256,17 +256,6 @@ public class Rule {
 
     }
 
-    /*private int[] checkFinishFigureLine(int[][] shape) {
-        for (int i = shape.length - 1; i >= 0; i--) {
-            for (int j = 0; j < shape[i].length; j++) {
-                if (shape[i][j] == 1) {
-                    return shape[i];
-                }
-            }
-        }
-        return shape[0];
-    }*/
-
     public boolean checkFigureDownLine(int[][] shape, GameInfo gameInfo) {
 
         for (int i = 0; i < shape[shape.length - 1].length; i++) {
