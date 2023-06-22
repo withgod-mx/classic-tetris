@@ -1,8 +1,6 @@
 
 Y
 )src/main/java/org/example/Tutorial04.java,e/c/ec77c4789c76c802ed47da03c8b41a41283e10fd
-7
-pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
 f
 6src/main/java/kz/yerke/tetris/model/GameEventType.java,2/2/22730b698344412594f902bce9c9ddaa5f5d76e8
 Y
