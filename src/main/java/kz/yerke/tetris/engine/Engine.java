@@ -54,7 +54,8 @@ public class Engine {
         int nextFigureIndex = random.nextInt(7) + 1;
         drawNextShape(nextFigureIndex);
         gameInfo.setPreviousShape(figures.getShape());
-
+        MoveDown moveDown = new MoveDown(gameInfo);
+        moveDown.run();
         int timer = 300;
         while (!lose) {
             KeyStroke keyStroke = terminal.pollInput();
