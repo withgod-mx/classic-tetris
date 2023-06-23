@@ -15,3 +15,13 @@ g
 7src/main/java/kz/yerke/tetris/gui/InitialWindowGUI.java,5/a/5a81d4d13661a3a4dbedd39840613f9d196e0a3f
 j
 :src/main/java/kz/yerke/tetris/engine/LanguageSelector.java,7/5/75bafd73742d58327e485bbf67a833c0387273fb
+e
+5src/main/java/kz/yerke/tetris/model/MainSettings.java,4/d/4dab43fd60e05b58688ffb74b165e20922f83143
+a
+1src/main/java/kz/yerke/tetris/model/GameInfo.java,4/a/4a24e7f342393e55a013f966b030e52755eda54b
+e
+5src/main/java/kz/yerke/tetris/gui/MainGameWindow.java,6/a/6aefc23d53f7b50ea7fc04c45c5c952617ff0722
+b
+2src/test/java/kz/yerke/tetris/engine/RuleTest.java,4/6/462862c68863c1998839f4afd928f10b47e64871
+`
+0src/main/java/kz/yerke/tetris/model/Figures.java,b/8/b845252cde62e5d37e750a4ee3a11096a67273a7
