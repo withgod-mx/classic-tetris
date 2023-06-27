@@ -109,10 +109,11 @@ public class Engine {
                 figures = getRandomFigure(nextFigureIndex);
                 nextFigureIndex = random.nextInt(7) + 1;
                 gameInfo.setMoveDown(true);
+                drawNextShape(nextFigureIndex);
             }
 
             calculateAndDraw(rule.desk);
-            drawNextShape(nextFigureIndex);
+            //drawNextShape(nextFigureIndex);
 
             if (lose) {
                 gameInfo.setFinishGame(true);
@@ -180,6 +181,11 @@ public class Engine {
         rule.crashLineToListAndUpdate(lineCrash);
         crashAnimation(lineCrash);
         updateScore();
+        updateLevel();
+    }
+
+    private void updateLevel() throws IOException {
+        windowDraw.draw(String.valueOf(gameInfo.getLevel()), 16, 2);
     }
 
     private void updateScore() throws IOException {
