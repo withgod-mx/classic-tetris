@@ -87,9 +87,8 @@ public class Engine {
                 figures.setShape(rule.figureRotate(figures.getShape()));
                 gameInfo.setPreviousShape(figures.getShape());
             } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowDown)) {
-                gameInfo.setMove(true);
-            } else {
-
+                if (gameInfo.getColumnPosition() > 3)
+                    gameInfo.setMove(true);
             }
 
             if (gameInfo.isMove()) {
@@ -109,7 +108,6 @@ public class Engine {
                 crashLines(rule.desk);
                 figures = getRandomFigure(nextFigureIndex);
                 nextFigureIndex = random.nextInt(7) + 1;
-                gameInfo.setSpeedTimer(300);
                 gameInfo.setMoveDown(true);
             }
 
@@ -137,46 +135,6 @@ public class Engine {
         return figures.getShape();
     }
 
-
-    public void start() throws IOException, InterruptedException {
-        boolean lose = false;
-        Figures figures = getRandomFigure(0);
-        int nextFigureIndex = random.nextInt(7) + 1;
-        drawNextShape(nextFigureIndex);
-        gameInfo.setPreviousShape(figures.getShape());
-        //MoveDown moveDown = new MoveDown(gameInfo, rule);
-        //moveDown.run();
-        int timer = 300;
-        while (!lose) {
-            KeyStroke keyStroke = terminal.pollInput();
-            rule.clearPreviousPositionShape(gameInfo, gameInfo.getPreviousShape());
-            gameInfo.setPreviousShape(figures.getShape());
-            boolean isMove = moveNext(keyStroke, figures);
-            calculateAndDraw(rule.desk);
-
-            if ((!isMove) && (gameInfo.getColumnPosition() == 0)) {
-                lose = true;
-            } else if (!isMove) {
-                gameInfo.setColumnPosition(0);
-                gameInfo.setRowPosition(3);
-                gameInfo.setPreviousColumnPosition(0);
-                gameInfo.setPreviousColumnPosition(0);
-                crashLines(rule.desk);
-                figures = getRandomFigure(nextFigureIndex);
-                nextFigureIndex = random.nextInt(7) + 1;
-                gameInfo.setSpeedTimer(300);
-            }
-            Thread.sleep(gameInfo.getSpeedTimer());
-            drawNextShape(nextFigureIndex);
-        }
-
-        if (lose) {
-            lostAnimation();
-            updateParameter();
-        }
-
-    }
-
     public void gameOverEvent() throws IOException {
         boolean close = false;
         while (!close) {
@@ -195,32 +153,8 @@ public class Engine {
         gameInfo.setScore(0);
         gameInfo.setLevel(1);
         gameInfo.setRowPosition(3);
-
-    }
-
-
-
-    private boolean moveNext(KeyStroke keyStroke, Figures figure) {
-        boolean isMove = true;
-        if(keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowLeft)) {
-            isMove = rule.moveAndCheckNextFigure(gameInfo, figure, ObjectMove.LEFT);
-        } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowRight)) {
-            isMove = rule.moveAndCheckNextFigure(gameInfo, figure, ObjectMove.RIGHT);
-        } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowUp)) {
-            rule.clearPreviousPositionShape(gameInfo, figure.getShape());
-            figure.setShape(rule.figureRotate(figure.getShape()));
-            gameInfo.setPreviousShape(figure.getShape());
-            isMove = rule.moveAndCheckNextFigure(gameInfo, figure, ObjectMove.NONE);
-        } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowDown)) {
-            if(gameInfo.getColumnPosition() > 3) {
-                gameInfo.setSpeedTimer(0);
-            }
-            isMove = rule.moveAndCheckNextFigure(gameInfo, figure, ObjectMove.NONE);
-        } else {
-            isMove = rule.moveAndCheckNextFigure(gameInfo, figure, ObjectMove.NONE);
-        }
-
-        return isMove;
+        gameInfo.setMoveDown(true);
+        gameInfo.setSpeedTimer(1000);
     }
 
     private void drawNextShape(int index) throws IOException {
@@ -261,6 +195,20 @@ public class Engine {
                 windowDraw.draw(" .", rowPoint, line + 1);
                 gameInfo.setScore(gameInfo.getScore() + 4);
                 Thread.sleep(50);
+            }
+
+            if ((gameInfo.getScore() > 199) && (gameInfo.getScore() < 400)) {
+                gameInfo.setSpeedTimer(800);
+                gameInfo.setLevel(2);
+            } else if ((gameInfo.getScore() > 400) && (gameInfo.getScore() < 600)) {
+                gameInfo.setSpeedTimer(600);
+                gameInfo.setLevel(3);
+            } else if ((gameInfo.getScore() > 600) && (gameInfo.getScore() < 800)) {
+                gameInfo.setSpeedTimer(500);
+                gameInfo.setLevel(4);
+            } else if ((gameInfo.getScore() > 800) && (gameInfo.getScore() < 1000)) {
+                gameInfo.setSpeedTimer(400);
+                gameInfo.setLevel(5);
             }
 
         }

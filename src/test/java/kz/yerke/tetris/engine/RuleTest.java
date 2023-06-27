@@ -64,7 +64,7 @@ public class RuleTest {
         int startPosition = (20 % figureBuilder.getShapes().get(4).getShape().length) + 1;
         rule.desk = d;
         //int[][] result = rule.move(figureBuilder.getShapes().get(4).getShape(), 3, 3);
-        printResult(result);
+        //printResult(result);
     }
 
     @Test

@@ -11,7 +11,7 @@ public class GameInfo {
 
     private int[][] previousShape;
 
-    private int speedTimer;
+    private int speedTimer = 1000;
 
     private boolean moveDown = true;
 

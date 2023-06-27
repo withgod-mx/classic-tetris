@@ -18,8 +18,8 @@ public class MoveDown extends Thread {
         try {
             while (!gameInfo.isFinishGame()) {
                 gameInfo.setMove(true);
-                System.out.println("Go");
-                Thread.sleep(2000);
+                //System.out.println("Go");
+                Thread.sleep(gameInfo.getSpeedTimer());
             }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);

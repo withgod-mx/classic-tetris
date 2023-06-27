@@ -2,7 +2,6 @@ package kz.yerke.tetris.engine;
 
 import kz.yerke.tetris.model.Figures;
 import kz.yerke.tetris.model.GameInfo;
-import kz.yerke.tetris.model.ObjectMove;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,72 +142,6 @@ public class Rule {
         }
     }
 
-    public boolean moveAndCheckNextFigure(GameInfo gameInfo, Figures figure, ObjectMove objectMove) {
-
-        gameInfo.setPreviousRowPosition(gameInfo.getRowPosition());
-        gameInfo.setPreviousColumnPosition(gameInfo.getColumnPosition());
-        if (objectMove == ObjectMove.LEFT) {
-            if (gameInfo.getRowPosition() == 0) {
-                figure.setShape(figureMoveLeftPosition(figure.getShape()));
-            } else {
-                boolean moveNextLeft = moveFigureInDesk(figure.getShape(), objectMove, gameInfo);
-                if (moveNextLeft) {
-                    gameInfo.setRowPosition(gameInfo.getRowPosition() - 1);
-                }
-            }
-        } else if (objectMove == ObjectMove.RIGHT) {
-            if (gameInfo.getRowPosition() + figure.getShape()[0].length == 10) {
-                figure.setShape(figureMoveRightPosition(figure.getShape()));
-            } else {
-                boolean moveNextRight = moveFigureInDesk(figure.getShape(), objectMove, gameInfo);
-                if (moveNextRight) {
-                    gameInfo.setRowPosition(gameInfo.getRowPosition() + 1);
-                }
-            }
-        } else if (objectMove == ObjectMove.NONE) {
-            moveFigureInDesk(figure.getShape(), objectMove, gameInfo);
-        }
-
-        int freeLine = getFreeLineByFigure(figure.getShape());
-
-
-        if (gameInfo.getColumnPosition() == desk.length - 1) {
-            boolean checkDownMove = checkFigureDownLine(figure.getShape(), gameInfo);
-            if (checkDownMove) {
-                figure.setShape(figureMoveDown(figure.getShape(), gameInfo));
-            }
-            return checkDownMove;
-        } else if (gameInfo.getColumnPosition() < desk.length - 1) {
-
-            int[] shapeLine = figure.getShape()[(figure.getShape().length - 1) - freeLine]; ///checkFinishFigureLine(figure.getShape());
-
-
-            if (gameInfo.getColumnPosition() == desk.length - 1) {
-                return false;
-            }
-
-            for (int i = 0; i < shapeLine.length; i++) {
-
-                if (freeLine == 0) {
-                    if(shapeLine[i] == 1) {
-                        if (desk[gameInfo.getColumnPosition() + 1][gameInfo.getRowPosition() + i] == 1) {
-                            return false;
-                        }
-                    }
-                } else {
-                    if (desk[(gameInfo.getColumnPosition() + 1) - freeLine][gameInfo.getRowPosition() + i] == 1) {
-                        if (shapeLine[i] == 1)
-                            return false;
-                    }
-                }
-
-            }
-            gameInfo.setColumnPosition(gameInfo.getColumnPosition() + 1);
-        }
-
-        return true;
-
-    }
 
     private int getFreeLineByFigure(int[][] shape) {
         int index = 0;
@@ -241,19 +174,6 @@ public class Rule {
             }
         }
         return true;
-    }
-
-    private boolean moveFigureInDesk(int[][] shape, ObjectMove objectMove, GameInfo gameInfo) {
-        boolean move = true;
-        if (objectMove != null && ((objectMove == ObjectMove.LEFT) && (gameInfo.getRowPosition() > 0))) {
-            move = checkMoveLeft(gameInfo, shape);
-        } else if (objectMove != null && ((objectMove == ObjectMove.RIGHT) && (gameInfo.getRowPosition() <= 10))) {
-            move = checkMoveRight(gameInfo, shape);
-        }
-
-        moveAndCheckMoveRightOrLeft(gameInfo, shape);
-
-        return move;
     }
 
     public boolean checkMoveRight(GameInfo gameInfo, int[][] shape) {
@@ -294,11 +214,7 @@ public class Rule {
         boolean isMove = true;
         int col = 0;
         int row = 0;
-        if ((gameInfo.getColumnPosition() > 0) && (gameInfo.getColumnPosition() < 19)) {
-            col = gameInfo.getColumnPosition();
-        } else if (gameInfo.getColumnPosition() == 19) {
-            col = gameInfo.getColumnPosition();
-        }
+        col = gameInfo.getColumnPosition();
 
         if(col == 0) {
             return true;
@@ -325,21 +241,6 @@ public class Rule {
         }
 
         return isMove;
-    }
-
-    private void moveAndCheckMoveRightOrLeft(GameInfo gameInfo, int[][] shape) {
-        int col = gameInfo.getColumnPosition();
-        for (int i = shape.length - 1; i >= 0; i--) {
-            if (col < 0) {
-                return;
-            }
-            for (int j = 0; j < shape[i].length; j++) {
-                if (desk[col][gameInfo.getRowPosition() + j] == 0) {
-                    desk[col][gameInfo.getRowPosition() + j] = shape[i][j];
-                }
-            }
-            col--;
-        }
     }
 
     private int[][] figureMoveDown(int[][] shape, GameInfo gameInfo) {
