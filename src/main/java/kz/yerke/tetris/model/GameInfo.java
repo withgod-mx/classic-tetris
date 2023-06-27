@@ -13,12 +13,42 @@ public class GameInfo {
 
     private int speedTimer;
 
+    private boolean moveDown = true;
+
+    private boolean move = true;
+
+    private boolean finishGame = true;
+
     public GameInfo(int rowPosition, int columnPosition, int score, int level, int speedTimer) {
         this.rowPosition = rowPosition;
         this.columnPosition = columnPosition;
         this.score = score;
         this.level = level;
         this.speedTimer = speedTimer;
+    }
+
+    public boolean isMove() {
+        return move;
+    }
+
+    public void setMove(boolean move) {
+        this.move = move;
+    }
+
+    public boolean isFinishGame() {
+        return finishGame;
+    }
+
+    public void setFinishGame(boolean finishGame) {
+        this.finishGame = finishGame;
+    }
+
+    public boolean isMoveDown() {
+        return moveDown;
+    }
+
+    public void setMoveDown(boolean moveDown) {
+        this.moveDown = moveDown;
     }
 
     public int[][] getPreviousShape() {

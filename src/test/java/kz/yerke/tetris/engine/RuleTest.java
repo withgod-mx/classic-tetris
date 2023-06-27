@@ -19,8 +19,8 @@ public class RuleTest {
         int startPosition = (20 % figureBuilder.getShapes().get(4).getShape().length) + 1;
         // move(int[][] desk, int[][] shape, int column, int position)
         Rule rule = new Rule();
-        int[][] deskResult = rule.move(figureBuilder.getShapes().get(4).getShape(), 0, startPosition);
-        printResult(deskResult);
+        //int[][] deskResult = rule.move(figureBuilder.getShapes().get(4).getShape(), 0, startPosition);
+        //printResult(deskResult);
     }
 
     @Test
@@ -29,11 +29,11 @@ public class RuleTest {
         int startPosition = (20 % figureBuilder.getShapes().get(4).getShape().length) + 1;
         Rule rule = new Rule();
         int column = 4;
-        int[][] deskResult = rule.move(figureBuilder.getShapes().get(4).getShape(), column, startPosition);
-        printResult(deskResult);
+        //int[][] deskResult = rule.move(figureBuilder.getShapes().get(4).getShape(), column, startPosition);
+        //printResult(deskResult);
         System.out.println("Next column");
-        deskResult = rule.move(figureBuilder.getShapes().get(4).getShape(), column + 1, startPosition);
-        printResult(deskResult);
+        //deskResult = rule.move(figureBuilder.getShapes().get(4).getShape(), column + 1, startPosition);
+        //printResult(deskResult);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class RuleTest {
         };
         int startPosition = (20 % figureBuilder.getShapes().get(4).getShape().length) + 1;
         rule.desk = d;
-        int[][] result = rule.move(figureBuilder.getShapes().get(4).getShape(), 3, 3);
+        //int[][] result = rule.move(figureBuilder.getShapes().get(4).getShape(), 3, 3);
         printResult(result);
     }
 
@@ -157,8 +157,8 @@ public class RuleTest {
 
         };
         rule.desk = d;
-        rule.setPreviousRowPosition(2);
-        rule.setPreviousColumnPosition(4);
+        //rule.setPreviousRowPosition(2);
+        //rule.setPreviousColumnPosition(4);
         rule.clearPreviousPositionShape(null, figureBuilder.getShapes().get(2).getShape());
         printResult(rule.desk);
     }

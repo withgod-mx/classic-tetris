@@ -55,7 +55,8 @@ public class Main {
                         mainGameWindow.buildGameWindow();
                         mainGameWindow.updateLocalizationText(mainSettings);
                         Thread.sleep(1000);
-                        engine.start();
+                        //engine.start();
+                        engine.startNew();
                         terminal.clearScreen();
                         mainGameWindow.gameOverBaner();
                         mainGameWindow.gameOverText(mainSettings.getLocalizationText("finish-text"));

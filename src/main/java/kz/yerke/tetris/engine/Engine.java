@@ -48,14 +48,104 @@ public class Engine {
         }
     }
 
+    public void startNew() throws IOException, InterruptedException {
+        boolean lose = false;
+        Figures figures = getRandomFigure(0);
+        int nextFigureIndex = random.nextInt(7) + 1;
+
+        drawNextShape(nextFigureIndex);
+        MoveDown moveDown = new MoveDown(gameInfo, rule);
+        while (!lose) {
+            if(gameInfo.isFinishGame()) {
+                gameInfo.setFinishGame(false);
+                moveDown.start();
+            }
+
+            gameInfo.setPreviousShape(figures.getShape());
+            gameInfo.setPreviousRowPosition(gameInfo.getRowPosition());
+            gameInfo.setPreviousColumnPosition(gameInfo.getColumnPosition());
+            KeyStroke keyStroke = terminal.pollInput();
+            if(keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowLeft)) {
+                if (gameInfo.getRowPosition() == 0) {
+                    rule.clearPreviousPositionShape(gameInfo, figures.getShape());
+                    figures.setShape(moveFigure(figures, ObjectMove.LEFT));
+                } else if (gameInfo.getRowPosition() > 0) {
+                    if (rule.checkMoveLeft(gameInfo, figures.getShape()))
+                        gameInfo.setRowPosition(gameInfo.getRowPosition() - 1);
+                }
+            } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowRight)) {
+                if (gameInfo.getRowPosition() + figures.getShape()[0].length == 10) {
+                    rule.clearPreviousPositionShape(gameInfo, figures.getShape());
+                    figures.setShape(moveFigure(figures, ObjectMove.RIGHT));
+                } else {
+                    if (rule.checkMoveRight(gameInfo, figures.getShape())) {
+                        gameInfo.setRowPosition(gameInfo.getRowPosition() + 1);
+                    }
+                }
+            } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowUp)) {
+                rule.clearPreviousPositionShape(gameInfo, figures.getShape());
+                figures.setShape(rule.figureRotate(figures.getShape()));
+                gameInfo.setPreviousShape(figures.getShape());
+            } else if (keyStroke != null && (keyStroke.getKeyType() == KeyType.ArrowDown)) {
+                gameInfo.setMove(true);
+            } else {
+
+            }
+
+            if (gameInfo.isMove()) {
+                rule.dropDown(gameInfo, figures);
+                gameInfo.setMove(false);
+            }
+
+            rule.clearPreviousPositionShape(gameInfo, gameInfo.getPreviousShape());
+            rule.move(gameInfo, figures.getShape());
+            if (!gameInfo.isMoveDown() && (gameInfo.getColumnPosition() == 0)) {
+                lose = true;
+            } else if (!gameInfo.isMoveDown()) {
+                gameInfo.setColumnPosition(0);
+                gameInfo.setRowPosition(3);
+                gameInfo.setPreviousColumnPosition(0);
+                gameInfo.setPreviousColumnPosition(0);
+                crashLines(rule.desk);
+                figures = getRandomFigure(nextFigureIndex);
+                nextFigureIndex = random.nextInt(7) + 1;
+                gameInfo.setSpeedTimer(300);
+                gameInfo.setMoveDown(true);
+            }
+
+            calculateAndDraw(rule.desk);
+            drawNextShape(nextFigureIndex);
+
+            if (lose) {
+                gameInfo.setFinishGame(true);
+                lostAnimation();
+                updateParameter();
+            }
+
+        }
+    }
+
+    private int[][] moveFigure(Figures figures, ObjectMove objectMove) {
+        switch (objectMove) {
+            case LEFT -> {
+                return rule.figureMoveLeftPosition(figures.getShape());
+            }
+            case RIGHT -> {
+                return rule.figureMoveRightPosition(figures.getShape());
+            }
+        }
+        return figures.getShape();
+    }
+
+
     public void start() throws IOException, InterruptedException {
         boolean lose = false;
         Figures figures = getRandomFigure(0);
         int nextFigureIndex = random.nextInt(7) + 1;
         drawNextShape(nextFigureIndex);
         gameInfo.setPreviousShape(figures.getShape());
-        MoveDown moveDown = new MoveDown(gameInfo);
-        moveDown.run();
+        //MoveDown moveDown = new MoveDown(gameInfo, rule);
+        //moveDown.run();
         int timer = 300;
         while (!lose) {
             KeyStroke keyStroke = terminal.pollInput();
@@ -107,6 +197,8 @@ public class Engine {
         gameInfo.setRowPosition(3);
 
     }
+
+
 
     private boolean moveNext(KeyStroke keyStroke, Figures figure) {
         boolean isMove = true;
