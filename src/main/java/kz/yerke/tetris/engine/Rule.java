@@ -193,8 +193,10 @@ public class Rule {
 
         for (int i = 0; i < shape.length; i++) {
             if (shape[(shape.length - 1) - i][shape[i].length - 1] == 1) {
-                if (desk[col - i][row] == 1) {
-                    return false;
+                if(col - i >= 0) {
+                    if (desk[col - i][row] == 1) {
+                        return false;
+                    }
                 }
             } else {
                 if (col - i < 0) {

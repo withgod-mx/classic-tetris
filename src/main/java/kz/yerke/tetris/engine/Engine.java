@@ -24,6 +24,8 @@ public class Engine {
 
     Rule rule = new Rule();
 
+    int maxScore = 0;
+
     public Engine() {
 
     }
@@ -203,7 +205,9 @@ public class Engine {
                 Thread.sleep(50);
             }
 
-            if ((gameInfo.getScore() > 199) && (gameInfo.getScore() < 400)) {
+            scoreAndSpeed();
+
+            /*if ((gameInfo.getScore() > 199) && (gameInfo.getScore() < 400)) {
                 gameInfo.setSpeedTimer(800);
                 gameInfo.setLevel(2);
             } else if ((gameInfo.getScore() > 400) && (gameInfo.getScore() < 600)) {
@@ -215,10 +219,20 @@ public class Engine {
             } else if ((gameInfo.getScore() > 800) && (gameInfo.getScore() < 1000)) {
                 gameInfo.setSpeedTimer(400);
                 gameInfo.setLevel(5);
-            }
+            }*/
 
         }
 
+    }
+
+    private void scoreAndSpeed() {
+        if (gameInfo.getScore() == 0) {
+            gameInfo.setScore(maxScore);
+        } else if (gameInfo.getScore() >= maxScore) {
+            maxScore += 200;
+            gameInfo.setLevel(gameInfo.getLevel() + 1);
+            gameInfo.setSpeedTimer(gameInfo.getSpeedTimer() - 100);
+        }
     }
 
     public int changeAndCheckPosition(int position) {
