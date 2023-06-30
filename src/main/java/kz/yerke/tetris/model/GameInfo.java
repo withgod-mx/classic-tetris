@@ -96,7 +96,10 @@ public class GameInfo {
     }
 
     public void setSpeedTimer(int speedTimer) {
-        this.speedTimer = speedTimer;
+        if (speedTimer < 0) {
+            this.speedTimer = 0;
+        } else
+            this.speedTimer = speedTimer;
     }
 
     public int getPreviousColumnPosition() {

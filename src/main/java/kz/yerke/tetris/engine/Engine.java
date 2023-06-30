@@ -24,7 +24,7 @@ public class Engine {
 
     Rule rule = new Rule();
 
-    int maxScore = 0;
+    int maxScore = 200;
 
     public Engine() {
 
