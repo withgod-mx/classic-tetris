@@ -15,3 +15,5 @@ Language: Java 17
 
 Visual Terminal library: lanterna. See more https://github.com/mabe02/lanterna
 
+
+Для Запуска введите команду mvn exec:java -Dexec.mainClass="kz.yerke.tetris.Main"
